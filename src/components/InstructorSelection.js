@@ -1,45 +1,48 @@
+// components/InstructorSelection.js
 import React from "react";
 
 function InstructorSelection({
   instructors,
   selectedInstructor,
-  onInstructorSelect,
+  onSelectInstructor,
+  isFiltered,
 }) {
   return (
-    <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 shadow-2xl border border-white/20 lg:col-span-2">
-      <h2 className="text-2xl font-bold text-white mb-6">
-        Select Your Instructor
+    <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">
+        2. Choose Your Instructor {isFiltered && "(Filtered)"}
       </h2>
-
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         {instructors.map((instructor) => (
-          <button
+          <div
             key={instructor.id}
-            onClick={() => onInstructorSelect(instructor)}
-            className={`
-              p-4 rounded-xl transition-all text-left
-              ${
-                selectedInstructor?.id === instructor.id
-                  ? "bg-purple-600 scale-105 shadow-lg ring-2 ring-purple-400"
-                  : "bg-white/5 hover:bg-white/10"
-              }
-            `}
+            onClick={() => onSelectInstructor(instructor)}
+            className={`cursor-pointer rounded-xl overflow-hidden border-4 transition-all ${
+              selectedInstructor?.id === instructor.id
+                ? "border-emerald-500 shadow-xl scale-105"
+                : "border-gray-200 hover:border-emerald-300 shadow-lg"
+            }`}
           >
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-lg font-bold text-white">
+            <div className="bg-gradient-to-br from-emerald-500 to-teal-500 p-6 text-center">
+              <div className="text-5xl mb-2">{instructor.image}</div>
+              <div className="text-white font-bold text-lg">
                 {instructor.name}
-              </h3>
-              <span className="text-yellow-400 text-sm">
-                ★ {instructor.rating}
-              </span>
+              </div>
             </div>
-            <p className="text-purple-200 text-sm mb-2">
-              {instructor.specialty}
-            </p>
-            <p className="text-white font-bold text-lg">
-              ${instructor.price}/session
-            </p>
-          </button>
+
+            <div className="p-4 bg-white">
+              <div className="text-sm text-gray-600 mb-2">
+                {instructor.specialty}
+              </div>
+              <div className="text-yellow-500 font-bold mb-2">
+                ★ {instructor.rating}
+              </div>
+              <div className="text-2xl font-bold text-emerald-600">
+                ${instructor.price}
+                <span className="text-sm text-gray-500 font-normal">/hr</span>
+              </div>
+            </div>
+          </div>
         ))}
       </div>
     </div>
