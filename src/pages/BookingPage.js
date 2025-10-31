@@ -1,4 +1,5 @@
 // pages/BookingPage.js
+// pages/BookingPage.js
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
@@ -6,6 +7,7 @@ import { instructors, timeSlots } from "../data/instructors";
 import DateTimeSelection from "../components/DateTimeSelection";
 import InstructorSelection from "../components/InstructorSelection";
 import BookingDetails from "../components/BookingDetails";
+import PaymentModal from "../components/PaymentModal";
 
 function BookingPage() {
   const navigate = useNavigate();
@@ -21,6 +23,7 @@ function BookingPage() {
   const [selectedTime, setSelectedTime] = useState(preSelectedTime);
   const [selectedInstructor, setSelectedInstructor] = useState(null);
   const [partySize, setPartySize] = useState(1);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const filteredInstructors =
     preSelectedInstructorIds.length > 0
@@ -30,6 +33,10 @@ function BookingPage() {
   const canBook = selectedDate && selectedTime && selectedInstructor;
 
   const handleBooking = () => {
+    setShowPaymentModal(true);
+  };
+
+  const handlePaymentComplete = () => {
     alert(
       `Booking Confirmed!\n\nInstructor: ${
         selectedInstructor.name
@@ -37,8 +44,9 @@ function BookingPage() {
         selectedDate
       ).toLocaleDateString()}\nTime: ${selectedTime}\nStudents: ${partySize}\nTotal: $${
         selectedInstructor.price * partySize
-      }`
+      }\n\nThank you for your payment!`
     );
+    setShowPaymentModal(false);
     navigate("/");
   };
 
@@ -84,6 +92,17 @@ function BookingPage() {
           canBook={canBook}
           onBooking={handleBooking}
         />
+
+        {showPaymentModal && (
+          <PaymentModal
+            selectedInstructor={selectedInstructor}
+            selectedDate={selectedDate}
+            selectedTime={selectedTime}
+            partySize={partySize}
+            onClose={() => setShowPaymentModal(false)}
+            onPaymentComplete={handlePaymentComplete}
+          />
+        )}
       </div>
     </div>
   );

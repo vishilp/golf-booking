@@ -1,9 +1,15 @@
 // components/InstructorCard.js
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function InstructorCard({ instructor, onBook }) {
+  const navigate = useNavigate();
+
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow border-2 border-transparent hover:border-emerald-400">
+    <div
+      onClick={() => navigate(`/instructor/${instructor.id}`)}
+      className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all cursor-pointer border-2 border-transparent hover:border-emerald-400 transform hover:scale-105"
+    >
       <div className="bg-gradient-to-br from-emerald-500 to-teal-500 p-8 text-center">
         <div className="text-6xl mb-2">{instructor.image}</div>
         <div className="text-white font-bold text-xl">{instructor.name}</div>
@@ -25,7 +31,10 @@ function InstructorCard({ instructor, onBook }) {
         </div>
 
         <button
-          onClick={onBook}
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent card click when clicking button
+            onBook();
+          }}
           className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-3 rounded-lg hover:from-emerald-700 hover:to-teal-700 transition-all font-semibold shadow-md"
         >
           Book Lesson
